@@ -57,7 +57,7 @@ exports.update = (req, res) => {
         password: req.body.password,
         birthDate: req.body.birthDate,
         age: req.body.age
-    }
+    } 
 
     /**
      * findByIdAndUpdate => Metodo de mongoose que permite buscar por id y actualizar un usuario. Tiene los parametros:
