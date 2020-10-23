@@ -1,7 +1,7 @@
-const GenreModel = require('../models/genre');
+const BookModel = require('../models/book');
 
 /**
- * @param {*} req
+ * @param {*} req 
  * @param {*} res 
  */
 
@@ -12,21 +12,26 @@ exports.create = (req, res) => {
         });
     }
 
-    const genre = new GenreModel({
+    const book = new BookModel({
         name: req.body.name,
-        status: req.body.status
+        author: req.body.author,
+        pageNumber: req.body.pageNumber,
+        publisher: req.body.publisher,
+        publicationDate: req.body.publicationDate,
+        genre: req.body.genre
     });
 
-    genre.save()
+    book.save()
         .then(
-            (dataGender) => {
-                res.send(dataGender)
+            (dataBook) => {
+                res.send(dataBook);
             }
         ).catch(
             (error) => {
                 return res.status(500).send({
                     message: error.message
-                })
+                });
             }
-        )
+        );
+
 }
