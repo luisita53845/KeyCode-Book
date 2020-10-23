@@ -35,3 +35,33 @@ exports.create = (req, res) => {
         );
 
 }
+
+exports.update = (req, res) => {
+    if (Object.entries(req.body).length == 0) {
+        return res.status(400).send({
+            message: 'Los datos son obligatorios'
+        });
+    }
+
+    const book = {
+        name: req.body.name,
+        author: req.body.author,
+        pageNumber: req.body.pageNumber,
+        publisher: req.body.publisher,
+        publicationDate: req.body.publicationDate,
+        genre: req.body.genre
+    }
+
+    BookModel.findByIdAndUpdate(req.params.id, book)
+        .then(
+            (bookUpdate) => {
+                res.send(bookUpdate);
+            }
+        ).catch(
+            (error) => {
+                res.status(500).send({
+                    message: error.message
+                });
+            }
+        );
+}
