@@ -1,8 +1,9 @@
 const mongoose = require('mongoose'); //Paquete que permite la comunicacion con la base de datos
+const config = require('./config');
 
 const conectDB = () => {
 
-    mongoose.connect('mongodb+srv://lfparra379:1193206973lfparra@luisa.ibx66.mongodb.net/KeyCodeBook?retryWrites=true&w=majority', {
+    mongoose.connect(config.mongoDB, {
 
         useNewUrlParser: true,
         useUnifiedTopology: true
