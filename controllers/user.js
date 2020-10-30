@@ -1,4 +1,6 @@
-const UserModel = require('../models/user')
+const UserModel = require('../models/user');
+const service = require('../services/index')
+
 
 /**
  * Metodo para almacenar un nuevo usuario
@@ -57,13 +59,8 @@ exports.update = (req, res) => {
         password: req.body.password,
         birthDate: req.body.birthDate,
         age: req.body.age
-    } 
+    }
 
-    /**
-     * findByIdAndUpdate => Metodo de mongoose que permite buscar por id y actualizar un usuario. Tiene los parametros:
-     *      -El id del usuario => req.params.id es el id que se envia por la URL
-     *      -Los datos nuevos
-     */
     UserModel.findByIdAndUpdate(req.params.id, user)
         .then(
             (userUpdate) => {
@@ -76,4 +73,72 @@ exports.update = (req, res) => {
                 });
             }
         );
+}
+
+//Metodo para listar todos los usuarios
+exports.getAll = (req, res) => {
+    UserModel.find()
+        .then(
+            (users) => {
+                res.send(users)
+            }
+        ).catch(
+            (error) => {
+                res.status(500).send({
+                    message: error.message
+                });
+            }
+        )
+}
+
+//Metodo para obtener un solo usuario por el id
+exports.getOne = (req, res) => {
+    UserModel.findById(req.params.id)
+        .then(
+            (users) => {
+                res.send(users)
+            }
+        ).catch(
+            (error) => {
+                res.status(500).send({
+                    message: error.message
+                });
+            }
+        )
+}
+
+//Metodo para eliminar solo un usuario por el id
+exports.deleteOne = (req, res) => {
+    UserModel.findByIdAndRemove(req.params.id)
+        .then(
+            (users) => {
+                res.send(users)
+            }
+        ).catch(
+            (error) => {
+                res.status(500).send({
+                    message: error.message
+                });
+            }
+        )
+}
+
+exports.login = (req, res) => {
+    UserModel.findOne({ email: req.body.email },
+        (error, dataUser) => {
+            if (dataUser != null) {
+                if (dataUser.password == req.body.password) {
+                    res.send({ token: service.createToken(dataUser) })
+                } else {
+                    res.status(400).send({
+                        message: 'Los datos no coinciden'
+                    })
+                }
+            } else {
+                res.status(400).send({
+                    message: 'Los datos no coinciden'
+                })
+            }
+        }
+    )
 }

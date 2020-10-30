@@ -52,7 +52,7 @@ exports.update = (req, res) => {
         genre: req.body.genre
     }
 
-    BookModel.findByIdAndUpdate(req.params.id, book)
+    BookModel.findByIdAndUpdate(req.params.id, book, { new: true })
         .then(
             (bookUpdate) => {
                 res.send(bookUpdate);
@@ -64,4 +64,58 @@ exports.update = (req, res) => {
                 });
             }
         );
+}
+
+exports.getAll = (req, res) => {
+
+    BookModel.find()
+        .populate()
+        .exec()
+
+    .then(
+        (book) => {
+            res.send(book);
+        }
+    ).catch(
+        (error) => {
+            res.status(500).send({
+                message: error.message
+            });
+
+        });
+
+}
+
+
+exports.getOne = (req, res) => {
+
+    BookModel.findById(req.params.id)
+        .populate()
+        .exec()
+
+    .then(
+        (book) => {
+            res.send(book);
+        }
+    ).catch(
+        (error) => {
+            res.status(500).send({
+                message: error.message
+            });
+        });
+}
+
+exports.deleteOne = (req, res) => {
+    BookModel.findByIdAndRemove(req.params.id)
+        .then(
+            (book) => {
+                res.send(book);
+            }
+        ).catch(
+            (error) => {
+                res.status(500).send({
+                    message: error.message
+                })
+
+            })
 }

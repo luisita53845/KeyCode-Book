@@ -5,6 +5,7 @@ const { conectDB } = require('./db');
 
 const app = express(); // Se convierte a la constante expree en un objeto por el cual podemos trabajar
 
+
 app.use(cors());
 app.use(bodyParser.json());
 
